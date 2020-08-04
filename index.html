@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pin Generator</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="pin-generator half-width">
+                    <input class="form-control" id='generatedPin' type="text">
+                    <button id="addGeneratePin" class="generate-btn">Generate Pin</button>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="input-section half-width">
+                    <input class="form-control" id="userPin" type="text">
+                    <div class="numbers">
+                        <div class="calc-body">
+                            <div class="calc-button-row">
+                              <div class="button" id="num7">7</div>
+                              <div class="button" id="num8">8</div>
+                              <div class="button" id="num9">9</div>
+                            </div>
+                            <div class="calc-button-row">
+                              <div class="button" id="num4">4</div>
+                              <div class="button" id="num5">5</div>
+                              <div class="button" id="num6">6</div>
+                            </div>
+                            <div class="calc-button-row">
+                              <div class="button" id="num1">1</div>
+                              <div class="button" id="num2">2</div>
+                              <div class="button" id="num3">3</div>
+                            </div>
+                            <div class="calc-button-row">
+                                <div class="button" id="backspace"><</div>
+                                <div class="button" id="num0">0</div>
+                                <div class="button" id="clearAll">C</div>
+                            </div>
+                            <div>
+                                <button type="submit" id="submitPin" class="submit-btn">Submit</button>
+                                <p class="action-left"> <span id="errorCount">3</span> try left</p>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="notify-section">
+            <p class="notify" id="pinError">❌ Pin Didn't Match, Please try again</p>
+            <p class="notify" id="pinBlock">❌ 3 attempts Failed Your are Blocked</p>
+            <p class="notify" id="pinSuccess">✅ Pin Matched... Secret door is opening for you</p>
+        </div>
+    </div>
+
+
+    <script>
+        // Generator Functionality
+        const addGeneratePin = document.getElementById('addGeneratePin');
+        addGeneratePin.addEventListener('click',function(){
+            var randomNumber = Math.floor(1000 + Math.random() * 9000)
+            document.getElementById('generatedPin').value = randomNumber;
+        });
+
+        // Backspace Functionality
+        const backspace = document.getElementById('backspace');
+        backspace.addEventListener('click',function(){
+            var userPin = document.getElementById('userPin').value;
+            userPin = userPin.slice(0, -1);
+            document.getElementById('userPin').value = userPin;
+        })
+
+        // Clear All Functionality
+        const clearAll = document.getElementById('clearAll');
+        clearAll.addEventListener('click',function(){
+           document.getElementById('userPin').value = "";
+        })
+
+        /* All Numbers Functionality starts from here*/
+
+        const num0 = document.getElementById('num0');
+        num0.addEventListener('click',function(){
+            setUserPin('num0');
+        });  
+
+        const num1 = document.getElementById('num1');
+        num1.addEventListener('click',function(){
+            setUserPin('num1');
+        });  
+        
+        const num2 = document.getElementById('num2');
+        num2.addEventListener('click',function(){
+            setUserPin('num2');
+        }); 
+
+        const num3 = document.getElementById('num3');
+        num3.addEventListener('click',function(){
+            setUserPin('num3');
+        }); 
+
+        const num4 = document.getElementById('num4');
+        num4.addEventListener('click',function(){
+            setUserPin('num4');
+        }); 
+
+        const num5 = document.getElementById('num5');
+        num5.addEventListener('click',function(){
+            setUserPin('num5');
+        }); 
+
+        const num6 = document.getElementById('num6');
+        num6.addEventListener('click',function(){
+            setUserPin('num6');
+        }); 
+
+        const num7 = document.getElementById('num7');
+        num7.addEventListener('click',function(){
+            setUserPin('num7');
+        });
+        
+        const num8 = document.getElementById('num8');
+        num8.addEventListener('click',function(){
+            setUserPin('num8');
+        }); 
+
+        const num9 = document.getElementById('num9');
+        num9.addEventListener('click',function(){
+            setUserPin('num9');
+        }); 
+
+        function setUserPin(id){
+            var getNum = document.getElementById(id).innerText;
+            var userPinInput = document.getElementById('userPin').value;
+            var totalPin =  userPinInput + getNum;
+            document.getElementById('userPin').value = totalPin;
+        }
+
+         /* All Numbers Functionality Ends from here*/
+
+
+        // Submit Button Functionality
+        const addSubmitPin = document.getElementById('submitPin');
+        addSubmitPin.addEventListener('click',function(){
+           var userPin = document.getElementById('userPin').value;
+           var userPin = parseInt(userPin);
+           var generatedPin = document.getElementById('generatedPin').value;
+           var generatedPin = parseInt(generatedPin);
+           var pinError = document.getElementById('pinError');
+           var pinSuccess = document.getElementById('pinSuccess');
+           var pinBlock = document.getElementById('pinBlock');
+           var errorCount = document.getElementById('errorCount').innerText;
+           var errorCount = parseInt(errorCount);
+           if(errorCount <= 0){
+                pinBlock.style.display = "block";
+                document.getElementById('userPin').value = "";
+                document.getElementById('generatedPin').value = "";
+                return;
+           }
+            if(userPin === generatedPin){
+                pinSuccess.style.display = "block";
+                return;
+            }else{
+                pinError.style.display = "block";
+                errorCount = errorCount - 1;
+                document.getElementById('errorCount').innerText = errorCount;
+            }
+            
+        });
+
+        
+    </script>
+</body>
+</html>
